@@ -1,0 +1,9 @@
+{
+  "selected": [
+    "build_project.sh",
+    "deploy_project.sh"
+  ],
+  "opts": {
+    "VERCEL_BUILD_PRODUCTION": true
+  }
+}
