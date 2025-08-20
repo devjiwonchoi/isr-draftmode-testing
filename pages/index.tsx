@@ -1,26 +1,12 @@
-import type { ParsedUrlQuery } from 'querystring'
-import { draftMode } from 'next/headers'
 import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage.external'
-import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
+import { GetStaticPropsContext } from 'next'
 
-type PageProps = {
-  params: {
-    slug: Array<string> | undefined
-  }
-  /**
-   * Next tracks access to this using a proxy - accessing a property will opt-in to dynamic rendering
-   */
-  searchParams: ParsedUrlQuery
-}
-
-export default function Home({
-  draftMode: isDraftModeEnabled,
-  query,
-}: {
-  draftMode: boolean
-  query: any
-}) {
-  const token = isDraftModeEnabled ? query.token : undefined
+export default function Home() {
+  const router = useRouter()
+  const { query } = router
+  const isDraftModeEnabled = query.draftMode === 'true'
+  const token = query.token
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -79,11 +65,10 @@ function _getStore() {
   return store
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getStaticProps(ctx: GetStaticPropsContext) {
   return {
     props: {
       draftMode: ctx.draftMode ?? false,
-      query: ctx.query,
     },
   }
 }
